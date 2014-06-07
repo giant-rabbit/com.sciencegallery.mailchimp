@@ -68,11 +68,11 @@ class CRM_Mailchimp_Form_Sync extends CRM_Core_Form {
     $group_ids = array();
 
     // Get the Groups
-    $groups = mailchimp_variable_get('groups', array());
+    $groups = CRM_Mailchimp_Utils::getConfig('groups', array());
 
 
     // Get the Groups
-    $group_map = mailchimp_variable_get('group_map', array());
+    $group_map = CRM_Mailchimp_Utils::getConfig('group_map', array());
 
 
     // Loop through each Group
@@ -143,7 +143,7 @@ class CRM_Mailchimp_Form_Sync extends CRM_Core_Form {
   public function runSync(CRM_Queue_TaskContext $ctx, $start) {
 
      // Get the API Key
-    $api_key = mailchimp_variable_get('api_key');
+    $api_key = CRM_Mailchimp_Utils::getConfig('api_key');
 
     // If the API Key or Client ID are empty
     // return now, for there is nothing else we can do.
@@ -152,10 +152,10 @@ class CRM_Mailchimp_Form_Sync extends CRM_Core_Form {
     }
 
     // Get the Groups
-    $groups = mailchimp_variable_get('groups', array());
+    $groups = CRM_Mailchimp_Utils::getConfig('groups', array());
 
     // Get the Groups
-    $group_map = mailchimp_variable_get('group_map', array());
+    $group_map = CRM_Mailchimp_Utils::getConfig('group_map', array());
 
     // Connect to MailChimp
     $mc_client = new Mailchimp($api_key);

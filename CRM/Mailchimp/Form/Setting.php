@@ -22,14 +22,14 @@ class CRM_Mailchimp_Form_Setting extends CRM_Core_Form {
     $this->addElement('text', 'api_key', ts('API Key'), array(
       'size' => 48,
     ));
-    $defaults['api_key'] = CRM_Core_BAO_Setting::getItem('MailChimp Preferences', 'api_key', NULL, FALSE);
+    $defaults['api_key'] = CRM_Mailchimp_Utils::getConfig('api_key', FALSE);
     $groups = CRM_Contact_BAO_Group::getGroups();
     $checkboxes = array();
     foreach ($groups as $group) {
       $checkboxes[] = &HTML_QuickForm::createElement('checkbox', $group->id, $group->title);
     }
     $this->addGroup($checkboxes, 'groups', ts('Groups'));
-    $current = CRM_Core_BAO_Setting::getItem('MailChimp Preferences','groups', NULL, FALSE);
+    $current = CRM_Mailchimp_Utils::getConfig('groups', FALSE);
     if (!empty($current)) {
       foreach ($current as $key => $value) {
         $defaults['groups'][$key] = $value;
@@ -55,32 +55,16 @@ class CRM_Mailchimp_Form_Setting extends CRM_Core_Form {
   public function postProcess() {
     $params = $this->controller->exportValues($this->_name);
     if (CRM_Utils_Array::value('api_key', $params)) {
-      CRM_Core_BAO_Setting::setItem($params['api_key'],
-        'MailChimp Preferences',
-        'api_key'
-      );
+      CRM_Mailchimp_Utils::setConfig('api_key', $params['api_key']);
     }
     if (CRM_Utils_Array::value('client_id', $params)) {
-      CRM_Core_BAO_Setting::setItem($params['client_id'],
-        'MailChimp Preferences',
-        'client_id'
-      );
+      CRM_Mailchimp_Utils::setConfig('client_id', $params['client_id']);
     }
     if (CRM_Utils_Array::value('groups', $params)) {
-      CRM_Core_BAO_Setting::setItem($params['groups'],
-        'MailChimp Preferences',
-        'groups'
-      );
+      CRM_Mailchimp_Utils::setConfig('groups', $params['groups']);
     }
     if (CRM_Utils_Array::value('api_key', $params) && CRM_Utils_Array::value('groups', $params)) {
       $this->mapGroups($params);
-    }
-    $history = new CRM_Contact_BAO_SubscriptionHistory();
-    $history->orderby('id DESC');
-    $history->limit(0,1);
-    $history->find();
-    while($history->fetch()){
-      setHistoryID($history->id);
     }
   }
 
@@ -92,9 +76,7 @@ class CRM_Mailchimp_Form_Setting extends CRM_Core_Form {
    * @return None
    */
   private function mapGroups($params = array()) {
-    $group_map = CRM_Core_BAO_Setting::getItem('MailChimp Preferences',
-      'group_map', NULL, FALSE
-    );
+    $group_map = CRM_Mailchimp_Utils::getConfig('group_map', FALSE);
     $group_map = !empty($group_map) ? $group_map : array();
     $groups = CRM_Contact_BAO_Group::getGroups();
     $group_ids = array();
@@ -155,10 +137,7 @@ class CRM_Mailchimp_Form_Setting extends CRM_Core_Form {
         }
       }
     }
-    CRM_Core_BAO_Setting::setItem($group_map,
-      'MailChimp Preferences',
-      'group_map'
-    );
+    CRM_Mailchimp_Utils::setConfig('group_map', $group_map);
     CRM_Core_Session::setStatus(ts('CiviCRM Groups to Mailchimp Lists mapping saved.'), '', 'success');
   }
 }

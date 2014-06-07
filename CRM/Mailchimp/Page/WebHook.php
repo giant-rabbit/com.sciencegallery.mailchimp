@@ -1,11 +1,12 @@
 <?php
+
 class CRM_Mailchimp_Page_WebHook extends CRM_Core_Page {
 
   function run() {
     if (CRM_Utils_System::authenticateKey($abort = TRUE)) {
       $request = CRM_Utils_Request::exportValues();
-      $groups = mailchimp_variable_get('groups', array());
-      $group_map = mailchimp_variable_get('group_map', array());
+      $groups = CRM_Mailchimp_Utils::getConfig('groups', array());
+      $group_map = CRM_Mailchimp_Utils::getConfig('group_map', array());
       if (!empty($request['data']['list_id']) && !empty($request['type'])) {
         $request_type = $request['type'];
         $request_data = $request['data'];

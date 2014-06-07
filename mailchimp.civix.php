@@ -16,9 +16,9 @@ function _mailchimp_civix_civicrm_config(&$config = NULL) {
   $extDir = $extRoot . 'templates';
 
   if ( is_array( $template->template_dir ) ) {
-      array_unshift( $template->template_dir, $extDir );
+    array_unshift( $template->template_dir, $extDir );
   } else {
-      $template->template_dir = array( $extDir, $template->template_dir );
+    $template->template_dir = array( $extDir, $template->template_dir );
   }
 
   $include_path = $extRoot . PATH_SEPARATOR . get_include_path( );
@@ -40,6 +40,13 @@ function _mailchimp_civix_civicrm_xmlMenu(&$files) {
  * Implementation of hook_civicrm_install
  */
 function _mailchimp_civix_civicrm_install() {
+  $mailchimpRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+  $mailchimpSQL = $mailchimpRoot . DIRECTORY_SEPARATOR . 'civicrm_mailchimp_history.sql';
+
+  CRM_Utils_File::sourceSQLFile(CIVICRM_DSN, $mailchimpSQL);
+
+  // rebuild the menu so our path is picked up
+  CRM_Core_Invoke::rebuildMenuAndCaches();
   _mailchimp_civix_civicrm_config();
   if ($upgrader = _mailchimp_civix_upgrader()) {
     return $upgrader->onInstall();
@@ -50,6 +57,13 @@ function _mailchimp_civix_civicrm_install() {
  * Implementation of hook_civicrm_uninstall
  */
 function _mailchimp_civix_civicrm_uninstall() {
+  $mailchimpRoot = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+  $mailchimpSQL = $mailchimpRoot . DIRECTORY_SEPARATOR . 'civicrm_mailchimp_history_uninstall.sql';
+
+  CRM_Utils_File::sourceSQLFile(CIVICRM_DSN, $mailchimpSQL);
+
+  // rebuild the menu so our path is picked up
+  CRM_Core_Invoke::rebuildMenuAndCaches();
   _mailchimp_civix_civicrm_config();
   if ($upgrader = _mailchimp_civix_upgrader()) {
     return $upgrader->onUninstall();
