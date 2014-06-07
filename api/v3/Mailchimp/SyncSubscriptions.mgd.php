@@ -6,17 +6,17 @@
 return array (
   0 => 
   array (
-    'name' => 'Cron:Mailchimp.SyncSmartGroups',
+    'name' => 'Cron:Mailchimp.SyncSubscriptions',
     'entity' => 'Job',
     'params' => 
     array (
       'version' => 3,
-      'name' => 'Call Mailchimp.SyncSmartGroups API',
-      'description' => 'Call Mailchimp.SyncSmartGroups API',
-      'run_frequency' => 'Daily',
+      'name' => 'Sync Mailchimp Subscriptions',
+      'description' => 'Sync Mailchimp Subscriptions with CiviCRM Groups',
+      'run_frequency' => 'Always',
       'api_entity' => 'Mailchimp',
-      'api_action' => 'SyncSmartGroups',
-      'parameters' => '',
+      'api_action' => 'SyncSubscriptions',
+      'parameters' => 'limit=100',
     ),
   ),
 );

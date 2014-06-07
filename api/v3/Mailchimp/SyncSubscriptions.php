@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Mailchimp.SyncSmartGroups API specification (optional)
+ * Mailchimp.SyncSubscriptions API specification (optional)
  * This is used for documentation and validation.
  *
  * @param array $spec description of fields supported by this API call
  * @return void
  * @see http://wiki.civicrm.org/confluence/display/CRM/API+Architecture+Standards
  */
-function _civicrm_api3_mailchimp_syncsmartgroups_spec(&$spec) {
+function _civicrm_api3_mailchimp_syncsubscriptions_spec(&$spec) {
 
 }
 
 /**
- * Mailchimp.SyncSmartGroups API
+ * Mailchimp.SyncSubscriptions API
  *
  * @param array $params
  * @return array API result descriptor
@@ -21,7 +21,7 @@ function _civicrm_api3_mailchimp_syncsmartgroups_spec(&$spec) {
  * @see civicrm_api3_create_error
  * @throws API_Exception
  */
-function civicrm_api3_mailchimp_syncsmartgroups($params) {
+function civicrm_api3_mailchimp_syncsubscriptions($params) {
 
   // Get the API Key
   $api_key = CRM_Mailchimp_Utils::getConfig('api_key');
